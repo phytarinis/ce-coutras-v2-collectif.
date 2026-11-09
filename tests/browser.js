@@ -9,7 +9,24 @@ try {
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
   await page.goto('http://127.0.0.1:8000');
-  await page.getByRole('button', { name: 'Commencer la démonstration' }).click();
+  for (const [width, height] of [[1280, 720], [1920, 1080], [1024, 576], [375, 812]]) {
+    await page.setViewportSize({ width, height });
+    await page.evaluate(() => document.fonts.ready);
+    for (const selector of ['.home-title', '.home-tagline', '.home-start', '.home-facts', '.home-identity']) {
+      const box = await page.locator(selector).boundingBox();
+      assert.ok(box && box.x >= 0 && box.y >= 0 && box.x + box.width <= width + 1 && box.y + box.height <= height + 1, `${selector} hors écran ${width}×${height}`);
+    }
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth && document.documentElement.scrollHeight <= innerHeight), true);
+  }
+  await page.setViewportSize({ width: 1280, height: 720 });
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  for (const image of await page.locator('.home img').all()) {
+    await image.evaluate(img => img.decode());
+    assert.equal(await image.evaluate(img => img.naturalWidth > 0), true);
+  }
+  const bg = await page.request.get('http://127.0.0.1:8000/assets/originals/images%20(8).jpeg');
+  assert.equal(bg.ok(), true);
+  await page.getByRole('button', { name: 'LANCER LE BAZAR !' }).click();
   await page.getByRole('button', { name: 'Enregistrer le choix et l’indice de démonstration' }).click();
   await page.getByText('Mémoire de la partie : 1 choix, 1 indice(s)', { exact: true }).waitFor();
   for (let index = 0; index < situations.length; index++) {
@@ -27,11 +44,14 @@ try {
   await page.getByText('Mémoire de la partie : 1 choix, 1 indice(s)', { exact: true }).waitFor();
   await page.getByRole('button', { name: 'Recommencer une partie', exact: true }).click();
   await page.getByRole('button', { name: 'Confirmer le redémarrage', exact: true }).click();
-  await page.getByRole('heading', { name: 'Une enquête à mener ensemble' }).waitFor();
-  await page.getByText('Mémoire de la partie : 0 choix, 0 indice(s)', { exact: true }).waitFor();
+  await page.getByRole('heading', { name: 'Ce Coutras qui n’existe pas… Ça dérape !' }).waitFor();
   await page.keyboard.press('Tab');
-  assert.equal(await page.locator(':focus').textContent(), 'Commencer la démonstration');
+  assert.equal(await page.locator(':focus').textContent(), 'LANCER LE BAZAR !');
   await page.keyboard.press('Enter');
+  await page.getByRole('heading', { name: situations[0].title, exact: true }).waitFor();
+  await page.getByRole('button', { name: 'Retour à l’accueil', exact: true }).click();
+  await page.keyboard.press('Tab');
+  await page.keyboard.press('Space');
   await page.getByRole('heading', { name: situations[0].title, exact: true }).waitFor();
   await page.getByRole('button', { name: 'Enregistrer le choix et l’indice de démonstration' }).click();
   await page.getByRole('button', { name: 'Situation suivante', exact: true }).click();
@@ -41,6 +61,7 @@ try {
   await page.setViewportSize({ width: 375, height: 812 });
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
   await page.reload();
+  await page.getByRole('button', { name: 'LANCER LE BAZAR !' }).click();
   await page.getByText('Mémoire de la partie : 0 choix, 0 indice(s)', { exact: true }).waitFor();
   assert.deepEqual(errors, []);
   console.log('Parcours navigateur validé : 7 situations, 3 fins, mémoire, retour, remise à zéro, clavier, affichage mobile et absence d’erreur JavaScript.');
