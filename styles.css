@@ -25,3 +25,54 @@ summary { cursor: pointer; padding: .6rem 0; font-weight: 650; }
 footer { font-size: .85rem; }
 .notice:empty { display: none; }
 @media (max-width: 600px) { .indicators { grid-template-columns: 1fr; } button { width: 100%; margin-right: 0; } header, main, footer { padding: .8rem; } }
+
+/* Accueil : composition indépendante des scènes du jeu. */
+.is-home { background: #082331; color: #fff2d8; }
+.is-home > header, .is-home > footer { display: none; }
+.is-home main { width: 100%; padding: 0; }
+.home {
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  min-height: 100svh;
+  padding: 2.5vh 5vw 2vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 2vh;
+  background: linear-gradient(90deg, #082331 0%, #082331 30%, #082331dc 44%, #08233122 70%),
+    url("assets/originals/images (8).jpeg") right center / auto 100% no-repeat;
+}
+.home::after { content: ''; position: absolute; z-index: -1; inset: 70% 0 0; background: linear-gradient(transparent, #082331 90%); pointer-events: none; }
+.home-character { position: absolute; z-index: -1; right: 0; bottom: 8%; width: 53%; height: 77%; object-fit: contain; object-position: bottom right; filter: drop-shadow(-3px 0 0 #fff2d8) drop-shadow(2px 0 0 #fff2d8); }
+.home-identity { display: flex; align-items: center; gap: 1.5vw; width: fit-content; margin: 0; font-size: clamp(.8rem, 2.2vw, 1.6rem); font-weight: 850; line-height: 1.1; }
+.home-identity > span:last-child { max-width: 5em; }
+.home-cross { color: #f18635; font-size: 1.7em; }
+/* Logo fourni dans la maquette : cadrage CSS, original conservé intégralement. */
+.home-labo { width: clamp(64px, 14vh, 155px); aspect-ratio: 1; overflow: hidden; position: relative; flex-shrink: 0; }
+.home-labo img { position: absolute; width: 760%; max-width: none; height: auto; left: -45%; top: -12%; }
+.home-content { width: 58%; padding: 1vh 0; }
+.home-title { display: flex; flex-direction: column; align-items: flex-start; gap: .04em; font-family: Impact, 'Arial Narrow', system-ui, sans-serif; font-style: italic; font-size: clamp(1.8rem, min(5.1vw, 8.8vh), 6rem); font-weight: 900; line-height: 1.07; letter-spacing: -.045em; margin: 0 0 .35em; }
+.paper { display: block; max-width: 100%; color: #082331; background: #fff2d8; padding: .1em .3em .18em; clip-path: polygon(1% 3%, 20% 0, 43% 3%, 70% 0, 99% 3%, 100% 30%, 99% 65%, 100% 97%, 76% 100%, 50% 97%, 25% 100%, 0 97%, 1% 70%, 0 35%); }
+.paper:first-child { transform: rotate(-2deg); }
+.paper-orange { background: #db570c; color: #fff2d8; transform: rotate(-3deg); margin-left: .5em; }
+.home-tagline { max-width: 30em; font-size: clamp(.85rem, min(1.9vw, 3vh), 1.4rem); font-weight: 700; font-style: italic; line-height: 1.3; margin: .9em 0 0; }
+.home-controls { text-align: center; }
+.home-start { background: #f18635; color: #082331; border: 3px solid #fff2d8; border-radius: 3rem; font-size: clamp(1rem, min(2.8vw, 4.8vh), 2rem); font-weight: 900; padding: .35em 1.2em; margin: .3rem; box-shadow: 0 4px 0 #173d36; }
+.home-start:hover:not(:disabled) { background: #fff2d8; color: #082331; border-color: #f18635; }
+.home-start:focus-visible { outline: 4px solid #fff2d8; outline-offset: 7px; }
+.home-facts { list-style: none; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: .4rem 0; margin: 1.4vh 0 0; font-size: clamp(.75rem, min(1.65vw, 3vh), 1.2rem); font-weight: 650; }
+.home-facts li { padding: 0 1.5em; }
+.home-facts li + li { border-left: 1px solid #fff2d8; }
+@media (max-aspect-ratio: 4/3) {
+  .home { gap: 1.5rem; padding: 1rem 5vw; background-position: 70% center; }
+  .home-content { width: 100%; }
+  .home-character { opacity: .3; width: 90%; height: 65%; bottom: 14%; }
+  .home-title { font-size: clamp(1.6rem, 7.7vw, 3.8rem); }
+  .home-tagline { max-width: 24em; font-size: 1rem; text-shadow: 0 1px 4px #082331; }
+  .home-controls { background: #082331ee; padding: .7rem; border-radius: .4rem; }
+  .home-start { max-width: calc(100% - .6rem); }
+  .home-facts { font-size: .8rem; gap: .5rem; }
+  .home-facts li { padding: 0 .5em; }
+  .home-facts li + li { border: 0; }
+}

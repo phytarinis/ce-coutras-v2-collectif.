@@ -1,5 +1,6 @@
 import { situations, endings, demoClue } from './content.js';
 import { createGame, enterScene, choose } from './engine.js';
+import { createHome } from './home.js';
 
 // Mémoire de la session seulement : pas de stockage de données personnelles.
 let game = createGame();
@@ -38,14 +39,16 @@ function heading(parent, text) {
 
 function render() {
   root.replaceChildren();
+  document.body.classList.toggle('is-home', game.sceneId === 'accueil');
+  if (game.sceneId === 'accueil') {
+    const { screen, title } = createHome(() => navigate(situations[0].id));
+    root.append(screen);
+    title.focus();
+    return;
+  }
   const panel = element('section', undefined, 'panel');
   let title;
-  if (game.sceneId === 'accueil') {
-    title = heading(panel, 'Une enquête à mener ensemble');
-    panel.append(element('p', 'Ce prototype prépare la navigation des sept situations et des trois fins du jeu collectif. Aucun scénario ni dialogue n’est encore intégré.'));
-    panel.append(element('p', 'Le formateur manipule l’interface après les échanges du groupe. Les déplacements de démonstration ne constituent pas des choix narratifs.'));
-    panel.append(button('Commencer la démonstration', () => navigate(situations[0].id)));
-  } else if (game.sceneId === 'fins') {
+  if (game.sceneId === 'fins') {
     title = heading(panel, 'Les trois fins possibles');
     panel.append(element('p', 'Aucune fin n’est calculée : leurs contenus, barèmes et conditions restent à valider. Ces boutons ouvrent uniquement des écrans de démonstration.'));
     const actions = element('div', undefined, 'actions');
