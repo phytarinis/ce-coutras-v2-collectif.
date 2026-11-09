@@ -1,0 +1,11 @@
+{
+  "name": "ce-coutras-v2-collectif",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "python3 -m http.server 8000 --bind 0.0.0.0",
+    "test": "node --test tests/engine.test.js",
+    "test:browser": "node tests/browser.js"
+  },
+  "devDependencies": { "playwright": "1.56.1" }
+}
