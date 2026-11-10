@@ -166,3 +166,24 @@ vérifie les trois zones dans un ordre libre, les consultations répétées, la
 fermeture clavier et le retour du focus, les cinq conséquences, leurs points,
 l’unicité du choix, la navigation et le parcours de démonstration restant.
 L’accueil validé, les contenus des situations 2 à 7 et les fins sont inchangés.
+
+## Mission 4 — Habillage de la situation 1
+
+L’habillage est isolé sous la classe `is-situation-one` : bleu nuit, crème,
+orange et sauge, titre en papier découpé, story fictive avec avatar typographique,
+alternatives clavier compactes et notification narrative. Aucun nouvel asset ni
+service externe n’est nécessaire. Le texte technique de l’en-tête est masqué
+uniquement dans cette situation. Les autres scènes et l’accueil conservent leur
+présentation.
+
+Les indicateurs associent un pictogramme à la valeur exacte. Ils n’utilisent
+ni pourcentage, ni barre de progression, car aucun maximum ni seuil n’est défini.
+L’animation d’apparition de la conséquence dure 180 ms et est supprimée avec
+`prefers-reduced-motion`. La page reste défilable pour accéder à la mémoire,
+aux jauges et au redémarrage. L’affiche agrandie tient dans une fenêtre modale
+adaptée aux écrans 16:9 ; son contenu peut défiler si nécessaire.
+
+Validation : tests moteur inchangés (11 tests), parcours Chromium avec les cinq
+issues, exploration des trois zones au clic et au clavier, mémoire, points,
+navigation et contrôle de débordement horizontal aux formats 1280 × 720,
+1920 × 1080 et 1024 × 576. Le parcours de l’accueil est également vérifié.

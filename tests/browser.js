@@ -35,6 +35,13 @@ try {
     await open.focus();
     await page.keyboard.press('Enter');
     await page.getByRole('dialog').waitFor();
+    for (const id of ['date', 'lieu', 'organisateur']) {
+      const zone = page.locator(`.s1-hotspot-${id}`);
+      await zone.hover();
+      assert.notEqual(await zone.evaluate(el => getComputedStyle(el).backgroundColor), 'rgba(0, 0, 0, 0)');
+      await zone.click();
+      await page.getByRole('status').filter({ hasText: observations.find(item => item.id === id).text }).waitFor();
+    }
     const ids = ['organisateur', 'date', 'lieu', 'date'];
     for (const id of ids) {
       const hotspot = page.locator(`.s1-hotspot-${id}`);
@@ -80,6 +87,15 @@ try {
   assert.equal(await page.locator(':focus').textContent(), 'LANCER LE BAZAR !');
   await page.keyboard.press('Enter');
   await page.getByRole('heading', { name: situations[0].title, exact: true }).waitFor();
+  for (const [width, height] of [[1280, 720], [1920, 1080], [1024, 576]]) {
+    await page.setViewportSize({ width, height });
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+    assert.equal(await page.locator('header > p:last-child').isVisible(), false);
+    await page.getByRole('button', { name: 'Agrandir et explorer l’affiche' }).click();
+    const modal = await page.getByRole('dialog').boundingBox();
+    assert.ok(modal.x >= 0 && modal.y >= 0 && modal.x + modal.width <= width + 1 && modal.y + modal.height <= height + 1);
+    await page.keyboard.press('Escape');
+  }
   await page.getByRole('button', { name: decisions[1].label, exact: true }).click();
   await page.getByRole('button', { name: 'Continuer — Tout le monde en parle !' }).click();
   await page.getByRole('button', { name: 'Enregistrer le choix et l’indice de démonstration' }).click();

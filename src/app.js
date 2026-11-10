@@ -41,6 +41,7 @@ function heading(parent, text) {
 function render() {
   root.replaceChildren();
   document.body.classList.toggle('is-home', game.sceneId === 'accueil');
+  document.body.classList.toggle('is-situation-one', game.sceneId === 'affiche');
   if (game.sceneId === 'accueil') {
     const { screen, title } = createHome(() => navigate(situations[0].id));
     root.append(screen);
@@ -104,6 +105,12 @@ function render() {
   const indicators = element('dl', undefined, 'indicators');
   for (const [key, label] of [['rumor', 'Propagation de la rumeur'], ['investigation', 'Qualité de l’enquête']]) {
     const group = element('div');
+    if (game.sceneId === 'affiche') {
+      group.className = `s1-gauge s1-gauge-${key}`;
+      const icon = element('span', undefined, 's1-gauge-icon');
+      icon.setAttribute('aria-hidden', 'true');
+      group.append(icon);
+    }
     group.append(element('dt', label), element('dd', game.indicators[key] ?? 'Non définie — barème à valider'));
     indicators.append(group);
   }

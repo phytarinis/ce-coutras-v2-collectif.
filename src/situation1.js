@@ -48,26 +48,37 @@ export function createSituation1({ state, onInspect, onDecide, onNext, onClose }
   }
   const title = node('h1', 'L’affiche improbable');
   title.tabIndex = -1;
-  panel.append(title);
+  panel.append(node('p', '01 / L’enquête collective', 's1-kicker'), title);
   const saved = state.choices.find(item => item.sceneId === 'affiche');
   if (saved) {
     const decision = decisions.find(item => item.id === saved.id);
     const consequence = node('section', undefined, 's1-consequence');
-    consequence.append(node('p', 'Décision collective enregistrée', 'eyebrow'), node('h2', saved.label), node('p', decision.consequence));
-    panel.append(consequence, action('Continuer — Tout le monde en parle !', onNext));
+    const eventIcon = node('span', '!', 's1-event-icon');
+    eventIcon.setAttribute('aria-hidden', 'true');
+    consequence.append(eventIcon, node('p', 'Dans le fil · Nouvelle notification', 's1-event-label'), node('p', 'Décision collective enregistrée', 'eyebrow'), node('h2', saved.label), node('p', decision.consequence, 's1-event-text'));
+    panel.append(consequence, action('Continuer — Tout le monde en parle !', onNext, 's1-continue'));
     return { panel, title };
   }
 
   const layout = node('div', undefined, 's1-layout');
   const story = node('section', undefined, 's1-story');
   story.setAttribute('aria-label', 'Story fictive de Rumeurs247');
-  story.append(node('p', '@Rumeurs247 · Story fictive', 's1-account'), node('p', 'KØZMO GRATUIT À COUTRAS ?! Faites tourner avant que ça disparaisse !', 's1-message'));
+  const chrome = node('div', undefined, 's1-story-chrome');
+  chrome.setAttribute('aria-hidden', 'true');
+  for (let i = 0; i < 3; i++) chrome.append(node('span'));
+  const account = node('div', undefined, 's1-account-row');
+  const avatar = node('span', 'R', 's1-avatar');
+  avatar.setAttribute('aria-hidden', 'true');
+  account.append(avatar, node('p', '@Rumeurs247 · Story fictive', 's1-account'));
+  story.append(chrome, account, node('p', 'KØZMO GRATUIT À COUTRAS ?! Faites tourner avant que ça disparaisse !', 's1-message'));
   const thumbnail = action('Agrandir et explorer l’affiche', () => dialog.showModal(), 's1-thumbnail');
   const preview = node('img');
   preview.src = 'assets/affiche-kozmo-concert.png';
   preview.alt = 'Affiche annonçant un concert gratuit de KØZMO, le 21 juin à 19 h, place de la mairie à Coutras, avec Coutras Festivités.';
   thumbnail.prepend(preview);
   story.append(thumbnail);
+  const social = node('p', 'Faire tourner ? À vous de décider.', 's1-social-caption');
+  story.append(social);
 
   const dialog = node('dialog', undefined, 's1-dialog');
   dialog.setAttribute('aria-labelledby', 'poster-title');
@@ -101,7 +112,7 @@ export function createSituation1({ state, onInspect, onDecide, onNext, onClose }
     }
     const hotspot = action('', inspect, `s1-hotspot s1-hotspot-${observation.id}`);
     hotspot.title = observation.label;
-    const textControl = action(observation.label, inspect, 'secondary');
+  const textControl = action(observation.label, inspect, 'secondary s1-inspect-link');
     controls.push({ control: hotspot, ...observation }, { control: textControl, ...observation });
     poster.append(hotspot);
     notes.append(textControl);

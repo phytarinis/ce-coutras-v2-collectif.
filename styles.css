@@ -106,3 +106,81 @@ footer { font-size: .85rem; }
   .home-facts li { padding: 0 .5em; }
   .home-facts li + li { border: 0; }
 }
+
+/* Mission 4 : habillage limité à la situation 1, sans échelle de score inventée. */
+.is-situation-one { background: #0b2432; color: #fff1d5; }
+.is-situation-one > header { padding-top: .7rem; padding-bottom: .5rem; border-bottom: 1px solid #fff1d530; }
+.is-situation-one > header .brand { font-size: .85rem; font-weight: 500; color: #dbcfb7; }
+.is-situation-one > header > p:last-child { display: none; }
+.is-situation-one > header .eyebrow { color: #fff1d5; }
+.is-situation-one main { width: min(1440px, 100%); padding-top: 1rem; }
+.is-situation-one > footer { color: #c5d7cb; }
+.is-situation-one .panel { border: 0; border-radius: 0; background: transparent; padding: .4rem 0; }
+.is-situation-one .s1-kicker { margin: 0 0 .5rem; color: #bfd4c6; font-size: .8rem; font-weight: 750; letter-spacing: .12em; text-transform: uppercase; }
+.is-situation-one h1 { display: inline-block; font-family: Impact, 'Arial Narrow', system-ui, sans-serif; font-style: italic; font-weight: 900; font-size: clamp(1.7rem, 3.6vw, 2.7rem); letter-spacing: -.03em; color: #0b2432; background: #fff1d5; padding: .13em .45em .22em; clip-path: polygon(1% 4%, 23% 0, 50% 3%, 77% 0, 99% 4%, 100% 96%, 75% 100%, 48% 97%, 22% 100%, 0 96%); }
+.is-situation-one .s1-layout { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; gap: clamp(1rem, 4vw, 3rem); }
+.is-situation-one .s1-story { background: #132f3c; padding: .8rem 1rem; border: 1px solid #73988b; border-radius: 1rem; box-shadow: .35rem .35rem 0 #061924; }
+.s1-story-chrome { display: flex; gap: .3rem; margin-bottom: .7rem; }
+.s1-story-chrome span { height: 3px; background: #fff1d559; flex: 1; border-radius: 3px; }
+.s1-story-chrome span:first-child { background: #ef8b44; }
+.s1-account-row { display: flex; align-items: center; gap: .6rem; }
+.s1-avatar { display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: 50%; color: #0b2432; background: #ef8b44; border: 2px solid #fff1d5; font-weight: 900; transform: rotate(-8deg); }
+.is-situation-one .s1-account { font-size: .85rem; }
+.is-situation-one .s1-message { font-size: .95rem; margin: .6rem 0; }
+.is-situation-one .s1-thumbnail { border: 0; border-radius: .3rem; background: #071c28; color: #fff1d5; padding: .5rem; font-size: .8rem; }
+.is-situation-one .s1-thumbnail img { max-height: clamp(320px, 47vh, 580px); }
+.is-situation-one .s1-thumbnail:hover { background: #214337; color: #fff1d5; }
+.s1-social-caption { font-size: .75rem; color: #c8d9c5; margin: .6rem 0 0; }
+.is-situation-one .s1-collective h2 { font-family: Impact, 'Arial Narrow', system-ui, sans-serif; font-size: 1.6rem; font-style: italic; margin: .4rem 0; }
+.is-situation-one .s1-collective > p { font-size: .85rem; color: #d6e0d7; }
+.is-situation-one .s1-decision { position: relative; color: #fff1d5; background: #214c3e; border: 1px solid #91ad9b; border-left: 5px solid #ef8b44; border-radius: .15rem .6rem .6rem .15rem; padding: .8rem 1rem; margin: .7rem 0; font-size: clamp(.9rem, 1.45vw, 1.1rem); text-align: left; box-shadow: 3px 3px 0 #061924; }
+.is-situation-one .s1-decision:hover { background: #fff1d5; color: #0b2432; border-color: #ef8b44; }
+.is-situation-one .s1-trainer { display: inline-block; width: auto; color: #d6e0d7; border: 0; border-bottom: 1px dashed #91ad9b; border-radius: 0; background: transparent; font-size: .8rem; margin-top: .8rem; padding: .45rem .1rem; }
+.is-situation-one .s1-trainer:hover { background: #214c3e; color: #fff1d5; }
+.is-situation-one :focus-visible { outline: 3px solid #ffab62; outline-offset: 5px; }
+.is-situation-one h1:focus { outline: none; }
+/* L'affiche reste dominante ; l'alternative clavier est une liste compacte. */
+.is-situation-one .s1-dialog { width: min(1380px, 96vw); background: #0b2432; color: #fff1d5; border: 1px solid #91ad9b; }
+.is-situation-one .s1-poster-layout { grid-template-columns: minmax(0, 1.4fr) minmax(250px, .65fr); }
+.is-situation-one .s1-poster { width: min(100%, calc(76vh * .75)); }
+.is-situation-one .s1-notes { padding: .5rem; }
+.is-situation-one .s1-notes h3 { color: #ef8b44; font-size: 1.1rem; }
+.is-situation-one .s1-notes > p:not(.s1-observation) { font-size: .8rem; color: #c8d9c5; }
+.is-situation-one .s1-notes .s1-inspect-link { display: inline-block; width: auto; padding: .35rem .65rem; margin: .2rem .2rem .2rem 0; min-height: 44px; border: 1px solid #91ad9b; border-radius: 2rem; background: transparent; color: #fff1d5; font-size: .75rem; }
+.is-situation-one .s1-notes .s1-inspect-link:hover, .is-situation-one .s1-notes .s1-inspect-link.is-consulted { background: #c8d9c5; color: #0b2432; }
+.is-situation-one .s1-observation { font-size: clamp(.9rem, 1.7vw, 1.2rem); border-radius: .15rem; }
+.is-situation-one .s1-hotspot { cursor: pointer; }
+.is-situation-one .s1-hotspot:hover:not(:disabled), .is-situation-one .s1-hotspot:focus-visible { background: #ef8b4438; border: 2px dashed #0b2432; outline: 2px solid #fff1d5; }
+/* Notification narrative, même texte et même effet qu'avant l'habillage. */
+.is-situation-one .s1-consequence { position: relative; max-width: 52rem; padding: 1.5rem 1.8rem; background: #173e35; border: 1px solid #91ad9b; border-left: 6px solid #ef8b44; border-radius: .3rem 1rem 1rem .3rem; box-shadow: .4rem .4rem 0 #061924; animation: s1-arrive 180ms ease-out both; }
+.s1-event-icon { display: grid; place-items: center; width: 2.2rem; height: 2.2rem; border-radius: 50%; background: #ef8b44; color: #0b2432; font-size: 1.5rem; font-weight: 900; }
+.s1-event-label { color: #ffad6d; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+.is-situation-one .s1-consequence .eyebrow { font-size: .75rem; color: #c8d9c5; }
+.is-situation-one .s1-consequence h2 { font-size: 1.05rem; color: #c8d9c5; }
+.s1-event-text { font-size: clamp(1.15rem, 2.4vw, 1.7rem); font-weight: 700; line-height: 1.4; }
+.is-situation-one .s1-continue { background: #ef8b44; border-color: #ef8b44; color: #0b2432; padding: .7rem 1.3rem; border-radius: 2rem; margin: 1rem 0; }
+.is-situation-one .s1-continue:hover { background: #fff1d5; border-color: #fff1d5; }
+/* Symboles graphiques et valeurs exactes : ni pourcentage, ni maximum supposé. */
+.is-situation-one section[aria-label='État de la partie'] { border-top: 1px solid #91ad9b66; margin-top: 1.5rem; padding-top: 1.2rem; }
+.is-situation-one section[aria-label='État de la partie'] > h2 { font-size: 1rem; color: #c8d9c5; }
+.is-situation-one .indicators .s1-gauge { display: grid; grid-template-columns: 2.8rem 1fr auto; align-items: center; gap: .8rem; padding: 1rem; background: #132f3c; border: 1px solid #91ad9b; border-radius: .6rem; }
+.s1-gauge-icon { display: grid; place-items: center; width: 2.7rem; height: 2.7rem; border: 3px solid currentColor; border-radius: 50%; color: #ef8b44; font-size: 2rem; font-weight: 800; line-height: 1; }
+.s1-gauge-investigation .s1-gauge-icon { color: #b5d1b4; }
+.is-situation-one .s1-gauge dt { font-size: .85rem; }
+.is-situation-one .s1-gauge dd { margin: 0; color: #fff1d5; font-size: 1.8rem; font-weight: 900; }
+.is-situation-one section[aria-label='État de la partie'] > p { color: #c8d9c5; font-size: .75rem; }
+.is-situation-one section[aria-label='État de la partie'] > .secondary { background: transparent; color: #fff1d5; border-color: #91ad9b; font-size: .8rem; }
+.is-situation-one .s1-error { color: #ffad6d; }
+@keyframes s1-arrive { from { opacity: .2; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) { .is-situation-one .s1-consequence { animation: none; } }
+@media (max-width: 750px) {
+  .is-situation-one .s1-layout, .is-situation-one .s1-poster-layout { grid-template-columns: 1fr; }
+  .is-situation-one .s1-notes { padding: 0; }
+  .is-situation-one .s1-gauge dt { font-size: .75rem; }
+}
+/* Pictogrammes en CSS : pas de dépendance à une police de symboles. */
+.s1-gauge-icon::before { content: ''; width: .7rem; height: .7rem; border: 3px solid currentColor; }
+.s1-gauge-rumor .s1-gauge-icon::before { border-width: 3px 3px 0 0; transform: rotate(-15deg); }
+.s1-gauge-investigation .s1-gauge-icon::before { border-radius: 50%; }
+.s1-gauge-investigation .s1-gauge-icon::after { content: ''; position: absolute; width: .55rem; height: 3px; background: currentColor; transform: translate(-.4rem, .4rem) rotate(-45deg); }
+.s1-gauge-icon { position: relative; }
