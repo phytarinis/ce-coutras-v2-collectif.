@@ -29,7 +29,7 @@ export class BuzzAudio {
       voice.type = 'sine';
       voice.frequency.setValueAtTime([620, 740, 680, 820, 700, 780][index % 6], time);
       volume.gain.setValueAtTime(0, time);
-      volume.gain.linearRampToValueAtTime(.035, time + .012);
+      volume.gain.linearRampToValueAtTime(.14, time + .012);
       volume.gain.exponentialRampToValueAtTime(.0001, time + .09);
       voice.connect(volume);
       volume.connect(this.context.destination);
