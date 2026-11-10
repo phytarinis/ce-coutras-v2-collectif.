@@ -1,5 +1,6 @@
 import { contacts, c24Notification } from './situation3-state.js';
 import { telephoneAudio } from './telephone-audio.js';
+import { telephoneVoice } from './telephone-voice.js';
 
 export function createSituation3({ state, onAction, onNext, onPrevious }) {
   const scene = state.situation3;
@@ -32,7 +33,7 @@ export function createSituation3({ state, onAction, onNext, onPrevious }) {
   const soundNote = el('span', '', 's3-sound-note');
   soundNote.setAttribute('role', 'status');
   sound.addEventListener('click', () => {
-    if (telephoneAudio.enabled) telephoneAudio.mute();
+    if (telephoneAudio.enabled) { telephoneAudio.mute(); telephoneVoice.stop(); }
     else telephoneAudio.enabled = true;
     sound.textContent = telephoneAudio.enabled ? 'Son activé' : 'Son coupé';
     sound.setAttribute('aria-pressed', String(telephoneAudio.enabled));
@@ -74,7 +75,23 @@ export function createSituation3({ state, onAction, onNext, onPrevious }) {
       });
       timeout = setTimeout(() => onAction({ type: 'answer' }), remaining);
     } else {
-      line.append(el('p', contact.response, 's3-response'), button('TERMINER L’APPEL', { type: 'finish' }, 'finish'));
+      const voiceNote = el('p', '', 's3-sound-note');
+      voiceNote.setAttribute('role', 'status');
+      function readDialogues() {
+        if (!telephoneAudio.enabled) {
+          voiceNote.textContent = 'Activez le son pour écouter les dialogues.';
+          return;
+        }
+        voiceNote.textContent = '';
+        telephoneVoice.say(`${contact.humor} ${contact.response}`, () => {
+          if (!disposed) voiceNote.textContent = 'Voix française indisponible ou bloquée. Essayez « Écouter les dialogues » ; les textes restent accessibles.';
+        });
+      }
+      const replay = el('button', 'Écouter les dialogues', 'secondary');
+      replay.type = 'button';
+      replay.addEventListener('click', readDialogues);
+      line.append(el('p', contact.response, 's3-response'), replay, button('TERMINER L’APPEL', { type: 'finish' }, 'finish'), voiceNote);
+      if (telephoneAudio.enabled) readDialogues();
     }
     panel.append(line);
   } else {
@@ -98,5 +115,5 @@ export function createSituation3({ state, onAction, onNext, onPrevious }) {
   previous.type = 'button';
   previous.addEventListener('click', onPrevious);
   panel.append(previous);
-  return { panel, title, cleanup: () => { disposed = true; clearTimeout(timeout); telephoneAudio.stop(); } };
+  return { panel, title, cleanup: () => { disposed = true; clearTimeout(timeout); telephoneAudio.stop(); telephoneVoice.stop(); } };
 }
