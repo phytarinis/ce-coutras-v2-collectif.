@@ -3,11 +3,11 @@ import assert from 'node:assert/strict';
 import { createGame, enterScene, choose } from '../src/engine.js';
 import { situations, endings } from '../src/content.js';
 
-test('sept situations, trois fins et aucun barème imposé', () => {
+test('sept situations, trois fins et valeurs initiales validées', () => {
   assert.equal(situations.length, 7);
   assert.equal(endings.length, 3);
   assert.equal(new Set([...situations, ...endings].map(item => item.id)).size, 10);
-  assert.deepEqual(createGame().indicators, { rumor: null, investigation: null });
+  assert.deepEqual(createGame().indicators, { rumor: 0, investigation: 0 });
 });
 
 test('choix et indice immédiat sont mémorisés sans doublon ni mutation', () => {
@@ -37,7 +37,9 @@ test('une conséquence différée se déclenche une seule fois à sa destination
 });
 
 test('les indicateurs exigent une initialisation explicite ; valeurs de test uniquement', () => {
-  assert.throws(() => choose(createGame(), { id: 'x', effects: [{ type: 'indicator', indicator: 'rumor', operation: 'add', value: 2 }] }), /initiale/);
+  const undefinedGame = createGame();
+  undefinedGame.indicators.rumor = null;
+  assert.throws(() => choose(undefinedGame, { id: 'x', effects: [{ type: 'indicator', indicator: 'rumor', operation: 'add', value: 2 }] }), /initiale/);
   const initialized = choose(createGame(), { id: 'init', effects: [{ type: 'indicator', indicator: 'rumor', operation: 'set', value: 10 }] });
   const changed = choose(initialized, { id: 'change', effects: [{ type: 'indicator', indicator: 'rumor', operation: 'add', value: 2, atScene: 'allo' }] });
   assert.equal(changed.indicators.rumor, 10);

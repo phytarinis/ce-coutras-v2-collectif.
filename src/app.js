@@ -1,6 +1,7 @@
 import { situations, endings, demoClue } from './content.js';
 import { createGame, enterScene, choose } from './engine.js';
 import { createHome } from './home.js';
+import { createSituation1, inspectPoster, decidePoster } from './situation1.js';
 
 // Mémoire de la session seulement : pas de stockage de données personnelles.
 let game = createGame();
@@ -46,9 +47,17 @@ function render() {
     title.focus();
     return;
   }
-  const panel = element('section', undefined, 'panel');
+  let panel = element('section', undefined, 'panel');
   let title;
-  if (game.sceneId === 'fins') {
+  if (game.sceneId === 'affiche') {
+    ({ panel, title } = createSituation1({
+      state: game,
+      onInspect: id => { game = inspectPoster(game, id); return game; },
+      onDecide: id => { game = decidePoster(game, id); render(); },
+      onClose: () => { render(); root.querySelector('.s1-thumbnail')?.focus(); },
+      onNext: () => navigate('tout-le-monde'),
+    }));
+  } else if (game.sceneId === 'fins') {
     title = heading(panel, 'Les trois fins possibles');
     panel.append(element('p', 'Aucune fin n’est calculée : leurs contenus, barèmes et conditions restent à valider. Ces boutons ouvrent uniquement des écrans de démonstration.'));
     const actions = element('div', undefined, 'actions');
@@ -98,7 +107,7 @@ function render() {
     group.append(element('dt', label), element('dd', game.indicators[key] ?? 'Non définie — barème à valider'));
     indicators.append(group);
   }
-  status.append(indicators, element('p', 'Les indicateurs ne sont ni initialisés à zéro ni modifiés par la navigation.'));
+  status.append(indicators, element('p', 'Les indicateurs évoluent avec les décisions collectives, pas avec la navigation.'));
   const memory = element('details');
   memory.append(element('summary', `Mémoire de la partie : ${game.choices.length} choix, ${game.clues.length} indice(s)`));
   memory.append(element('h3', 'Choix enregistrés'));

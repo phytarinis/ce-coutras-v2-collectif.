@@ -24,6 +24,36 @@ dd { margin: .4rem 0 0; }
 summary { cursor: pointer; padding: .6rem 0; font-weight: 650; }
 footer { font-size: .85rem; }
 .notice:empty { display: none; }
+.s1-layout { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: 1.5rem; }
+.s1-story { background: #101f30; color: #fff2d8; padding: 1rem; border-radius: .7rem; }
+.s1-account { font-weight: 800; margin: 0; color: #c8d9c5; }
+.s1-message { font-weight: 750; line-height: 1.35; }
+.s1-thumbnail { display: flex; flex-direction: column; align-items: center; gap: .5rem; width: 100%; background: #101f30; border-color: #e78c48; padding: .5rem; margin: 0; font-size: .9rem; }
+.s1-thumbnail img { max-height: 340px; max-width: 100%; object-fit: contain; }
+.s1-decision, .s1-trainer { display: block; width: 100%; text-align: left; margin: .7rem 0; }
+.s1-decision { background: #173e35; border-color: #173e35; }
+.s1-trainer { margin-top: 1.5rem; font-size: .9rem; }
+.s1-consequence { background: #f8f0dd; border-left: 5px solid #d7601b; padding: 1.3rem; margin: 1rem 0; }
+.s1-dialog { width: min(1400px, 96vw); max-height: 94vh; padding: 1rem; border: 2px solid #e78c48; border-radius: .5rem; color: #fff2d8; background: #101f30; }
+.s1-dialog::backdrop { background: #07141ee8; }
+.s1-dialog > h2 { display: inline-block; margin-right: 1rem; }
+.s1-poster-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(260px, .8fr); gap: 1rem; align-items: start; }
+.s1-poster { position: relative; width: min(100%, calc(75vh * .75)); margin: auto; line-height: 0; }
+.s1-poster > img { display: block; width: 100%; height: auto; }
+.s1-hotspot { position: absolute; margin: 0; padding: 0; min-height: 0; border: 2px dashed transparent; border-radius: .2rem; background: transparent; }
+.s1-hotspot:hover:not(:disabled), .s1-hotspot:focus-visible { background: #f19a3655; border-color: #101f30; outline: 3px solid #fff2d8; outline-offset: 1px; }
+.s1-hotspot.is-consulted { border-color: #214c3e; background: #8daf9522; }
+.s1-hotspot-date { left: 30%; top: 67%; width: 44%; height: 10%; }
+.s1-hotspot-lieu { left: 24%; top: 78%; width: 52%; height: 11%; }
+.s1-hotspot-organisateur { left: 78%; top: 72%; width: 21%; height: 12%; }
+.s1-notes button { display: block; width: 100%; text-align: left; margin: .6rem 0; }
+.s1-notes button.is-consulted { background: #c8d9c5; color: #101f30; border-color: #c8d9c5; }
+.s1-observation { padding: 1rem; color: #101f30; background: #fff2d8; border-left: 5px solid #e78c48; }
+.s1-error { color: #922d0b; }
+@media (max-width: 750px) {
+  .s1-layout, .s1-poster-layout { grid-template-columns: 1fr; }
+  .s1-dialog { max-height: 94svh; }
+}
 @media (max-width: 600px) { .indicators { grid-template-columns: 1fr; } button { width: 100%; margin-right: 0; } header, main, footer { padding: .8rem; } }
 
 /* Accueil : composition indépendante des scènes du jeu. */
