@@ -62,7 +62,7 @@ try {
     const expected = { A: ['10', '20'], B: ['5', '30'], C: ['5', '15'], D: ['0', '15'] }[decision.id];
     assert.deepEqual(await page.locator('dd').allTextContents(), expected);
     await page.getByRole('button', { name: 'CONTINUER — ALLÔ COUTRAS ?', exact: true }).click();
-    await page.getByRole('heading', { name: 'Allô Coutras ?', exact: true }).waitFor();
+    await page.getByRole('heading', { name: 'ALLÔ COUTRAS ?', exact: true }).waitFor();
     await page.getByRole('button', { name: 'Situation précédente', exact: true }).click();
     await page.getByText(decision.notification, { exact: true }).waitFor();
     assert.deepEqual(await page.locator('dd').allTextContents(), expected);

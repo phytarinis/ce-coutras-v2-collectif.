@@ -94,7 +94,7 @@ utiliser `npm ci --cache /tmp/ce-coutras-v2-npm-cache` à la place de `npm ci`.
 
 ### Limites volontaires
 
-- Les situations 3 à 7 et les fins restent des emplacements de démonstration ;
+- Les situations 4 à 7 et les fins restent des emplacements de démonstration ;
   aucun seuil ni sélection automatique de fin n’est défini.
 - La navigation est libre et technique : elle ne représente pas encore le parcours narratif final.
 - Le moteur mémorise chaque choix une seule fois par scène ; les règles d’exclusivité
@@ -243,7 +243,7 @@ visible pendant le défilement de l’exploration. Le vidéoprojecteur physique 
 à vérifier. Aucun média externe, service supplémentaire ou dépendance n’est ajouté.
 
 La mémoire et le temps restent dans la session courante : recharger la page ou
-recommencer une partie les efface, comme auparavant. Les situations 3 à 7 et les
+recommencer une partie les efface, comme auparavant. Les situations 4 à 7 et les
 fins demeurent des emplacements de démonstration.
 
 ## Mission 6 — Avalanche et bilan simplifié
@@ -290,3 +290,65 @@ sans recadrage, à la place du portrait. Le gain de crête des notifications pas
 de 0,035 à 0,14 (environ +12 dB), sans allonger les sons ni modifier leur rythme.
 Le bouton de coupure et les protections contre le chevauchement sont conservés.
 Le volume perçu dépend encore du réglage et des haut-parleurs de l’appareil.
+
+## Mission 7 — Allô Coutras ? Le standard est en PLS !
+
+La situation 3 utilise `src/situation3-state.js` pour les contacts, dialogues,
+appels consommés et relais différé, `src/situation3.js` pour l’interface,
+`src/telephone-audio.js` pour la sonnerie locale et `situation3.css` pour un
+habillage isolé. Aucune connexion téléphonique, aucun média externe et aucune
+nouvelle image ne sont utilisés. Les dialogues sont fictifs et ne constituent
+pas des déclarations réelles des organismes.
+
+### Utiliser le standard
+
+- Choisir l’une des quatre cartes, puis confirmer « APPELER ». La sélection et
+  l’annulation ne consomment rien ; la confirmation consomme définitivement un
+  appel. Le compteur affiche 0/2, 1/2 ou 2/2. Un contact déjà appelé est désactivé.
+- Le message humoristique apparaît pendant une sonnerie synthétisée d’environ
+  deux secondes. « Voir la réponse maintenant » passe immédiatement à la réponse
+  et coupe la sonnerie. « Son activé » coupe aussi le son ; le réactiver vaut pour
+  les prochains appels. Si Web Audio est bloqué, le dialogue continue sans audio.
+- « TERMINER L’APPEL » mémorise la réponse et l’indice. Après un appel, choisir le
+  second ou « Poursuivre après un seul appel ». Après deux appels, les quatre
+  contacts sont désactivés et le bilan est disponible. Il n’y a aucun chronomètre
+  de jeu. Une fois le bilan choisi, aucun appel supplémentaire n’est proposé.
+- Le bilan montre une ou deux réponses et leur degré de certitude, sans transformer
+  une absence de confirmation en démenti. La notification C24 NEWS mène à la
+  situation 4 existante par « CONTINUER — C24 NEWS ».
+
+La mémoire garde les identifiants, l’ordre, le nombre, les réponses et les indices.
+Les appels apparaissent dans le carnet des scènes suivantes. Un retour pendant
+un appel conserve l’appel consommé ; un retour depuis la situation 4 conserve le
+bilan. Recharger la page ou recommencer la partie efface toujours toute la session.
+
+### Relais préparé pour la situation 5
+
+Un seul relais est préparé, dans l’ordre de priorité suivant : Coutras Festivités,
+mairie, police municipale, office de tourisme. Il est recalculé à la fin de chaque
+appel. Le second appel peut remplacer le relais, sans dupliquer l’effet ni toucher
+aux autres conséquences en attente.
+
+Le relais est conservé dans `game.situation3.relay`, et une unique conséquence
+`s3-correction` utilise le moteur existant pour ajouter l’indice `s3-relay` à
+l’entrée de la scène `buzz`. Aucune correction n’est déclenchée dans la situation 3
+ou 4. À ce stade, la situation 5 reste son emplacement provisoire : le relais y
+est disponible en mémoire pour son intégration narrative ultérieure. Il n’ajoute
+aucun point et ne se répète pas au retour dans cette scène.
+
+Les appels ne modifient aucune jauge. Les effets chiffrés de la situation 3 restent
+à valider lors de l’équilibrage général ; aucun barème n’est inventé. Les points,
+les dialogues et l’habillage des situations 1 et 2 restent inchangés.
+
+### Vérifications
+
+`npm test` couvre 43 tests, notamment les quatre appels seuls et les douze ordres
+possibles de deux contacts distincts, la consommation à confirmation, les doublons,
+le troisième appel interdit, la priorité du relais et son déclenchement unique,
+la mémoire, l’absence de points et la sonnerie. `npm run test:browser` couvre
+quatre parcours : régression complète, situation 2, avalanche et standard.
+Le standard vérifie les quatre dialogues, l’annulation, le clavier, l’audio coupé
+ou indisponible, les réponses immédiates et après deux secondes, la poursuite après
+un appel, le bilan après deux, la navigation et les formats 16:9. Un AudioContext
+réel a été activé dans Chromium. Le niveau sonore et le vidéoprojecteur physique
+restent à vérifier sur le matériel de séance. La page reste défilable.
