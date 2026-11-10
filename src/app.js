@@ -4,6 +4,8 @@ import { createHome } from './home.js';
 import { createSituation1, inspectPoster, decidePoster } from './situation1.js';
 import { transitionSituation2 } from './situation2-state.js';
 import { createSituation2 } from './situation2.js';
+import { contacts, transitionSituation3 } from './situation3-state.js';
+import { createSituation3 } from './situation3.js';
 
 // Mémoire de la session seulement : pas de stockage de données personnelles.
 let game = createGame();
@@ -48,6 +50,7 @@ function render() {
   document.body.classList.toggle('is-home', game.sceneId === 'accueil');
   document.body.classList.toggle('is-situation-one', game.sceneId === 'affiche');
   document.body.classList.toggle('is-situation-two', game.sceneId === 'tout-le-monde');
+  document.body.classList.toggle('is-situation-three', game.sceneId === 'allo');
   if (game.sceneId === 'accueil') {
     const { screen, title } = createHome(() => navigate(situations[0].id));
     root.append(screen);
@@ -85,6 +88,21 @@ function render() {
       },
       onNext: () => navigate('allo'),
       onPrevious: () => navigate('affiche'),
+    });
+    ({ panel, title } = scene);
+    cleanupScene = scene.cleanup;
+  } else if (game.sceneId === 'allo') {
+    game = transitionSituation3(game, { type: 'visit' });
+    const scene = createSituation3({
+      state: game,
+      onAction: (action, focusKey) => {
+        const previousFocus = document.activeElement?.dataset.s3Focus;
+        game = transitionSituation3(game, action);
+        render();
+        root.querySelector(`[data-s3-focus="${focusKey ?? previousFocus}"]`)?.focus();
+      },
+      onNext: () => navigate('c24'),
+      onPrevious: () => navigate('tout-le-monde'),
     });
     ({ panel, title } = scene);
     cleanupScene = scene.cleanup;
@@ -135,7 +153,7 @@ function render() {
   const indicators = element('dl', undefined, 'indicators');
   for (const [key, label] of [['rumor', 'Propagation de la rumeur'], ['investigation', 'Qualité de l’enquête']]) {
     const group = element('div');
-    if (game.sceneId === 'affiche' || game.sceneId === 'tout-le-monde') {
+    if (['affiche', 'tout-le-monde', 'allo'].includes(game.sceneId)) {
       group.className = `s1-gauge s1-gauge-${key}`;
       const icon = element('span', undefined, 's1-gauge-icon');
       icon.setAttribute('aria-hidden', 'true');
@@ -155,6 +173,19 @@ function render() {
   const clues = element('ul');
   game.clues.forEach(clue => clues.append(element('li', clue.label)));
   memory.append(game.clues.length ? clues : element('p', 'Aucun indice enregistré.'));
+  if (game.situation3?.calls.length) {
+    memory.append(element('h3', `Appels du standard : ${game.situation3.calls.length}/2`));
+    const calls = element('ol');
+    game.situation3.calls.forEach(call => {
+      const item = element('li');
+      const contact = contacts.find(contact => contact.id === call.id);
+      item.value = call.order;
+      item.append(element('strong', contact.name), element('p', call.response ?? 'Appel consommé — réponse non encore enregistrée.'));
+      if (call.completed) item.append(element('p', call.clue), element('p', contact.certainty));
+      calls.append(item);
+    });
+    memory.append(calls);
+  }
   status.append(memory, element('p', 'La mémoire est conservée pendant la navigation. Recharger ou fermer la page efface la partie.'));
   if (resetting) {
     const confirm = element('div', undefined, 'demo');
