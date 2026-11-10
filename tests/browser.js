@@ -2,6 +2,7 @@
 import assert from 'node:assert/strict';
 import { chromium } from 'playwright';
 import { situations, endings } from '../src/content.js';
+import { decisions, observations } from '../src/situation1.js';
 
 const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || '/usr/bin/chromium', headless: true, args: ['--no-sandbox'] });
 try {
@@ -26,12 +27,42 @@ try {
   }
   const bg = await page.request.get('http://127.0.0.1:8000/assets/originals/images%20(8).jpeg');
   assert.equal(bg.ok(), true);
+  for (const decision of decisions) {
+    await page.reload();
+    await page.getByRole('button', { name: 'LANCER LE BAZAR !' }).click();
+    await page.getByText('KØZMO GRATUIT À COUTRAS ?! Faites tourner avant que ça disparaisse !', { exact: true }).waitFor();
+    const open = page.getByRole('button', { name: 'Agrandir et explorer l’affiche' });
+    await open.focus();
+    await page.keyboard.press('Enter');
+    await page.getByRole('dialog').waitFor();
+    const ids = ['organisateur', 'date', 'lieu', 'date'];
+    for (const id of ids) {
+      const hotspot = page.locator(`.s1-hotspot-${id}`);
+      await hotspot.focus();
+      await page.keyboard.press('Space');
+      await page.getByRole('status').filter({ hasText: observations.find(item => item.id === id).text }).waitFor();
+      assert.equal(await hotspot.getAttribute('aria-pressed'), 'true');
+    }
+    await page.keyboard.press('Escape');
+    assert.equal(await page.locator(':focus').textContent(), 'Agrandir et explorer l’affiche');
+    await page.getByText('3 / 3 informations consultées', { exact: true }).waitFor();
+    await page.getByText('Mémoire de la partie : 0 choix, 3 indice(s)', { exact: true }).waitFor();
+    await page.getByRole('button', { name: decision.label, exact: true }).click();
+    await page.getByText(decision.consequence, { exact: true }).waitFor();
+    assert.equal(await page.locator('.s1-decision').count(), 0);
+    assert.deepEqual(await page.locator('dd').allTextContents(), [decision.id === 'A' ? '15' : '0', decision.id === 'C' ? '15' : '0']);
+    await page.getByRole('button', { name: 'Continuer — Tout le monde en parle !' }).click();
+    await page.getByRole('button', { name: 'Situation précédente', exact: true }).click();
+    await page.getByText(decision.consequence, { exact: true }).waitFor();
+    assert.deepEqual(await page.locator('dd').allTextContents(), [decision.id === 'A' ? '15' : '0', decision.id === 'C' ? '15' : '0']);
+  }
+  await page.reload();
   await page.getByRole('button', { name: 'LANCER LE BAZAR !' }).click();
-  await page.getByRole('button', { name: 'Enregistrer le choix et l’indice de démonstration' }).click();
+  await page.getByRole('button', { name: decisions[2].label, exact: true }).click();
   await page.getByText('Mémoire de la partie : 1 choix, 1 indice(s)', { exact: true }).waitFor();
   for (let index = 0; index < situations.length; index++) {
     await page.getByRole('heading', { level: 1, name: situations[index].title, exact: true }).waitFor();
-    if (index < situations.length - 1) await page.getByRole('button', { name: 'Situation suivante', exact: true }).click();
+    if (index < situations.length - 1) await page.getByRole('button', { name: index === 0 ? 'Continuer — Tout le monde en parle !' : 'Situation suivante', exact: true }).click();
   }
   await page.getByRole('button', { name: 'Voir les emplacements des fins' }).click();
   for (const ending of endings) {
@@ -49,15 +80,12 @@ try {
   assert.equal(await page.locator(':focus').textContent(), 'LANCER LE BAZAR !');
   await page.keyboard.press('Enter');
   await page.getByRole('heading', { name: situations[0].title, exact: true }).waitFor();
-  await page.getByRole('button', { name: 'Retour à l’accueil', exact: true }).click();
-  await page.keyboard.press('Tab');
-  await page.keyboard.press('Space');
-  await page.getByRole('heading', { name: situations[0].title, exact: true }).waitFor();
+  await page.getByRole('button', { name: decisions[1].label, exact: true }).click();
+  await page.getByRole('button', { name: 'Continuer — Tout le monde en parle !' }).click();
   await page.getByRole('button', { name: 'Enregistrer le choix et l’indice de démonstration' }).click();
   await page.getByRole('button', { name: 'Situation suivante', exact: true }).click();
   await page.getByRole('button', { name: 'Situation précédente', exact: true }).click();
   assert.equal(await page.getByRole('button', { name: 'Essai déjà enregistré' }).isDisabled(), true);
-  assert.equal(await page.getByText('Non définie — barème à valider', { exact: true }).count(), 2);
   await page.setViewportSize({ width: 375, height: 812 });
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
   await page.reload();

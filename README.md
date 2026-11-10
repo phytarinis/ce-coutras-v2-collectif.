@@ -26,8 +26,8 @@ Ouvrir `http://localhost:8000` dans un navigateur récent. Arrêter le serveur a
 Ctrl+C. Utiliser un serveur HTTP : ouvrir directement `index.html` comme fichier
 peut bloquer les modules JavaScript. Aucun `npm install` n’est nécessaire pour jouer.
 
-Cliquer sur « LANCER LE BAZAR ! », parcourir les situations et essayer
-le bouton de mémorisation. La mémoire reste visible après les déplacements.
+Cliquer sur « LANCER LE BAZAR ! », explorer l’affiche de la situation 1,
+valider une décision puis parcourir les autres situations de démonstration. La mémoire reste visible après les déplacements.
 À la dernière situation, ouvrir les trois aperçus de fins. « Recommencer une
 partie » demande une confirmation puis efface toute la mémoire.
 
@@ -65,9 +65,9 @@ chaque scène. Les effets pris en charge sont :
   lors d’une prochaine entrée dans cette scène. Sans ce champ, il est immédiat.
 
 Une variation d’indicateur est refusée tant que sa valeur initiale n’est pas
-explicitement définie. Les deux indicateurs restent donc `null` dans ce prototype.
-Les effets différés sont testés avec des données techniques et ne sont associés
-à aucune conséquence narrative du jeu.
+explicitement définie. Depuis la mission 3, le départ à 0 pour les deux
+indicateurs a été confirmé par le porteur du projet. Les effets différés
+restent testés avec des données techniques ; la situation 1 utilise des effets immédiats.
 
 ### Vérifications de développement
 
@@ -94,7 +94,8 @@ utiliser `npm ci --cache /tmp/ce-coutras-v2-npm-cache` à la place de `npm ci`.
 
 ### Limites volontaires
 
-- Aucun scénario, dialogue, média définitif, barème, seuil ou sélection automatique de fin.
+- Les situations 2 à 7 et les fins restent des emplacements de démonstration ;
+  aucun seuil ni sélection automatique de fin n’est défini.
 - La navigation est libre et technique : elle ne représente pas encore le parcours narratif final.
 - Le moteur mémorise chaque choix une seule fois par scène ; les règles d’exclusivité
   entre plusieurs choix restent à définir lorsque les situations seront intégrées.
@@ -128,3 +129,40 @@ Les tests navigateur vérifient l’absence de débordement de l’accueil à
 des images, le lancement au clavier, l’utilisation avec réduction des animations
 et le parcours existant (sept situations, trois fins, choix, indices, redémarrage).
 La vérification sur le vidéoprojecteur physique reste à effectuer.
+
+## Mission 3 — L’affiche improbable
+
+`src/situation1.js` contient la story de @Rumeurs247, les trois observations
+validées, les cinq décisions et leurs conséquences. L’affiche fournie a été
+renommée sans retouche en `assets/affiche-kozmo-concert.png`.
+
+Cliquer sur « Agrandir et explorer l’affiche » ouvre une fenêtre modale. Les
+zones 21 juin, Place de la mairie / Coutras et Coutras Festivités sont activables
+à la souris ou avec Tab puis Entrée/Espace. Des boutons portant les mêmes noms
+permettent aussi d’explorer sans viser une zone. Échap ou « Fermer l’affiche »
+ferme la fenêtre et replace le focus sur le bouton d’ouverture.
+
+Les observations sont mémorisées comme indices, sans points et sans enregistrer
+une décision collective. Les joueurs peuvent explorer dans n’importe quel ordre,
+sans chronomètre. Il n’est pas obligatoire de consulter les trois informations
+pour décider. Une seule décision collective est possible :
+
+| Décision | Propagation | Enquête | Indice de source |
+| --- | --- | --- | --- |
+| A — Partager | +15 | 0 | Aucun |
+| B — Signaler | 0 | 0 | Aucun |
+| C — Chercher l’origine | 0 | +15 | Compte de fans RapRadar33, non officiel |
+| D — Ne rien faire | 0 | 0 | Aucun |
+| Pas d’accord collectif | 0 | 0 | Aucun |
+
+Les variations ne sont pas affichées sur les boutons avant le choix. Après la
+conséquence, « Continuer — Tout le monde en parle ! » ouvre la situation 2.
+Revenir à la situation 1 affiche la conséquence enregistrée, sans rejouer les
+points. La mémoire et les points restent conservés pendant la navigation ;
+le rechargement efface toujours la partie.
+
+`npm test` exécute 11 tests (moteur et situation 1). `npm run test:browser`
+vérifie les trois zones dans un ordre libre, les consultations répétées, la
+fermeture clavier et le retour du focus, les cinq conséquences, leurs points,
+l’unicité du choix, la navigation et le parcours de démonstration restant.
+L’accueil validé, les contenus des situations 2 à 7 et les fins sont inchangés.

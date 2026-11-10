@@ -1,8 +1,8 @@
-// Moteur indépendant de l'interface. Les valeurs null signifient « non défini ».
+// Valeurs initiales validées pour la mission 3 : propagation 0, enquête 0.
 export function createGame() {
   return {
     sceneId: 'accueil',
-    indicators: { rumor: null, investigation: null },
+    indicators: { rumor: 0, investigation: 0 },
     choices: [],
     clues: [],
     pending: [],
@@ -28,6 +28,13 @@ function applyEffect(state, effect) {
       state.indicators[effect.indicator] += effect.value;
     } else throw new Error('Opération inconnue');
   } else throw new Error('Type de conséquence inconnu');
+}
+
+// Une consultation est un indice, pas une décision collective.
+export function rememberClue(state, clue) {
+  const next = structuredClone(state);
+  applyEffect(next, { type: 'clue', clue });
+  return next;
 }
 
 export function enterScene(state, sceneId) {
