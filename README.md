@@ -94,7 +94,7 @@ utiliser `npm ci --cache /tmp/ce-coutras-v2-npm-cache` à la place de `npm ci`.
 
 ### Limites volontaires
 
-- Les situations 2 à 7 et les fins restent des emplacements de démonstration ;
+- Les situations 3 à 7 et les fins restent des emplacements de démonstration ;
   aucun seuil ni sélection automatique de fin n’est défini.
 - La navigation est libre et technique : elle ne représente pas encore le parcours narratif final.
 - Le moteur mémorise chaque choix une seule fois par scène ; les règles d’exclusivité
@@ -187,3 +187,61 @@ Validation : tests moteur inchangés (11 tests), parcours Chromium avec les cinq
 issues, exploration des trois zones au clic et au clavier, mémoire, points,
 navigation et contrôle de débordement horizontal aux formats 1280 × 720,
 1920 × 1080 et 1024 × 576. Le parcours de l’accueil est également vérifié.
+
+## Mission 5 — Tout le monde en parle !
+
+La situation 2 réutilise le moteur, le carnet et les indicateurs. Elle est isolée
+entre `src/situation2-state.js` (étapes, temps, pistes, décisions et effets),
+`src/situation2.js` (interface) et `situation2.css` (styles limités à cette scène).
+Les règles et l’habillage de la situation 1, ainsi que l’accueil, sont conservés.
+
+### Déroulé pour le formateur
+
+1. Les six publications fictives apparaissent successivement avec « Publication
+   suivante ». Cette introduction est sans chronomètre ; seul le dernier message
+   ajouté reçoit une animation brève, désactivable avec les animations réduites.
+2. « Démarrer l’enquête — 90 secondes » lance le temps. Chaque carte est un vrai
+   bouton utilisable avec la souris ou Tab puis Entrée/Espace. Un premier clic
+   révèle le lien, un second remonte à la découverte essentielle de la piste.
+   Plusieurs cartes peuvent mener à la même piste ; une découverte n’est ajoutée
+   qu’une seule fois dans le carnet. Aucun point n’est attribué à l’exploration.
+3. « Mettre en pause » fige le temps et bloque les cartes. « Reprendre le
+   chronomètre » reprend le temps restant. Le compteur utilise une échéance réelle,
+   sans dépendre du nombre de rafraîchissements de l’onglet. Si l’on retourne à
+   la situation 1 sans mettre en pause, le temps continue à s’écouler ; il est
+   recalculé au retour. Les étapes et indices sont conservés.
+4. Après trois pistes découvertes, on peut ouvrir le débat immédiatement. À zéro,
+   l’exploration s’arrête automatiquement. Le débat n’est pas chronométré. Un indice
+   connu depuis la situation 1 n’est jamais révélé automatiquement dans cette scène.
+5. Le formateur valide une décision unique. Il peut enregistrer deux votes sans
+   accord pour rendre disponible l’issue « Pas d’accord collectif ». Un vote sans
+   accord n’est pas une décision et ne donne aucun point.
+6. Après la notification, « CONTINUER — ALLÔ COUTRAS ? » ouvre la situation 3.
+   Un retour à la situation 2 conserve la conséquence, sans rejouer les points.
+
+| Issue | Propagation | Enquête | Indice supplémentaire |
+| --- | --- | --- | --- |
+| A — Publier une alerte | +10 | +5 | Aucun |
+| B — Continuer à enquêter | +5 | +15 | Coutras Festivités, interlocuteur possible sans confirmation |
+| C — Ne rien relayer | +5 | 0 | Aucun |
+| Pas d’accord collectif | 0 | 0 | Aucun |
+
+Ces valeurs de travail sont celles demandées pour le prototype. Aucun point n’est
+annoncé avant le choix. Les résultats se cumulent avec la situation 1. Les
+jauges n’introduisent toujours ni maximum ni seuil. Aucune vidéo virale n’est ajoutée.
+
+### Vérifications et limites
+
+`npm test` exécute 20 tests. `npm run test:browser` exécute le parcours existant
+et le parcours dédié de la situation 2. Les tests utilisent une horloge contrôlée
+pour vérifier 90 secondes, une longue pause et l’expiration sans attendre en temps
+réel. Ils couvrent les six publications, la progression, les indices uniques,
+les quatre issues, les votes, les points cumulés, les retours de navigation,
+le clavier, les animations réduites et les formats 16:9 (1280 × 720, 1920 × 1080,
+1024 × 576), ainsi qu’un écran étroit. La page est défilable ; le chronomètre reste
+visible pendant le défilement de l’exploration. Le vidéoprojecteur physique reste
+à vérifier. Aucun média externe, service supplémentaire ou dépendance n’est ajouté.
+
+La mémoire et le temps restent dans la session courante : recharger la page ou
+recommencer une partie les efface, comme auparavant. Les situations 3 à 7 et les
+fins demeurent des emplacements de démonstration.

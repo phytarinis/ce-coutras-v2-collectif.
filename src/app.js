@@ -2,12 +2,15 @@ import { situations, endings, demoClue } from './content.js';
 import { createGame, enterScene, choose } from './engine.js';
 import { createHome } from './home.js';
 import { createSituation1, inspectPoster, decidePoster } from './situation1.js';
+import { transitionSituation2 } from './situation2-state.js';
+import { createSituation2 } from './situation2.js';
 
 // Mémoire de la session seulement : pas de stockage de données personnelles.
 let game = createGame();
 let resetting = false;
 let notice = '';
 const root = document.querySelector('#app');
+let cleanupScene = () => {};
 
 function element(tag, text, className) {
   const node = document.createElement(tag);
@@ -39,9 +42,12 @@ function heading(parent, text) {
 }
 
 function render() {
+  cleanupScene();
+  cleanupScene = () => {};
   root.replaceChildren();
   document.body.classList.toggle('is-home', game.sceneId === 'accueil');
   document.body.classList.toggle('is-situation-one', game.sceneId === 'affiche');
+  document.body.classList.toggle('is-situation-two', game.sceneId === 'tout-le-monde');
   if (game.sceneId === 'accueil') {
     const { screen, title } = createHome(() => navigate(situations[0].id));
     root.append(screen);
@@ -58,6 +64,26 @@ function render() {
       onClose: () => { render(); root.querySelector('.s1-thumbnail')?.focus(); },
       onNext: () => navigate('tout-le-monde'),
     }));
+  } else if (game.sceneId === 'tout-le-monde') {
+    game = transitionSituation2(game, { type: 'visit' });
+    const scene = createSituation2({
+      state: game,
+      onAction: (action, focusKey) => {
+        game = transitionSituation2(game, action);
+        render();
+        root.querySelector(`[data-s2-focus="${focusKey}"]`)?.focus();
+      },
+      onTick: () => {
+        const phase = game.situation2.phase;
+        game = transitionSituation2(game, { type: 'tick' });
+        if (game.situation2.phase !== phase) render();
+        return game.situation2;
+      },
+      onNext: () => navigate('allo'),
+      onPrevious: () => navigate('affiche'),
+    });
+    ({ panel, title } = scene);
+    cleanupScene = scene.cleanup;
   } else if (game.sceneId === 'fins') {
     title = heading(panel, 'Les trois fins possibles');
     panel.append(element('p', 'Aucune fin n’est calculée : leurs contenus, barèmes et conditions restent à valider. Ces boutons ouvrent uniquement des écrans de démonstration.'));
@@ -105,7 +131,7 @@ function render() {
   const indicators = element('dl', undefined, 'indicators');
   for (const [key, label] of [['rumor', 'Propagation de la rumeur'], ['investigation', 'Qualité de l’enquête']]) {
     const group = element('div');
-    if (game.sceneId === 'affiche') {
+    if (game.sceneId === 'affiche' || game.sceneId === 'tout-le-monde') {
       group.className = `s1-gauge s1-gauge-${key}`;
       const icon = element('span', undefined, 's1-gauge-icon');
       icon.setAttribute('aria-hidden', 'true');

@@ -1,0 +1,67 @@
+/* Styles limités à la situation 2 : aucun changement de l'accueil ou de S1. */
+.is-situation-two { background: #0b2432; color: #fff1d5; }
+.is-situation-two > header { padding-top: .7rem; padding-bottom: .5rem; border-bottom: 1px solid #fff1d530; }
+.is-situation-two > header .brand { font-size: .85rem; font-weight: 500; color: #dbcfb7; }
+.is-situation-two > header > p:last-child { display: none; }
+.is-situation-two main { width: min(1440px, 100%); padding-top: 1rem; }
+.is-situation-two > footer { color: #c5d7cb; }
+.is-situation-two .panel { border: 0; border-radius: 0; background: transparent; padding: .4rem 0; }
+.s2-kicker { color: #bfd4c6; font-size: .8rem; font-weight: 750; letter-spacing: .09em; text-transform: uppercase; margin: 0 0 .5rem; }
+.situation-two h1 { display: inline-block; font-family: Impact, 'Arial Narrow', system-ui, sans-serif; font-style: italic; font-size: clamp(1.6rem, 3.6vw, 2.7rem); color: #0b2432; background: #fff1d5; padding: .13em .45em .22em; clip-path: polygon(1% 4%, 23% 0, 50% 3%, 77% 0, 99% 4%, 100% 96%, 75% 100%, 48% 97%, 22% 100%, 0 96%); }
+.situation-two h1:focus { outline: none; }
+.is-situation-two :focus-visible { outline: 3px solid #ffad6d; outline-offset: 4px; }
+.s2-intro { max-width: 50rem; color: #d6e0d7; }
+.s2-feed { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .8rem; }
+.s2-post { display: grid; grid-template-columns: 2rem 1fr; gap: .5rem; padding: .85rem; background: #14333f; color: #fff1d5; border: 1px solid #77988b; border-radius: .75rem; font-size: .85rem; text-align: left; margin: 0; font-weight: 500; min-width: 0; }
+.s2-post strong { align-self: center; overflow-wrap: anywhere; }
+.s2-avatar { display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: 50%; background: #c3d8c2; color: #0b2432; font-weight: 900; border: 2px solid #e88a43; }
+.s2-post-text, .s2-post-action { grid-column: 1 / -1; }
+.s2-post-action { font-size: .75rem; color: #ffad6d; border-top: 1px solid #77988b66; padding-top: .4rem; }
+button.s2-post:hover:not(:disabled) { background: #224e40; color: #fff1d5; border-color: #ffad6d; }
+button.s2-post:disabled { background: #122b36; color: #c0c4c5; border-color: #5a6c70; opacity: .65; }
+.situation-two > button:not(.secondary), .s2-findings > button, .s2-decisions button { background: #ef8b44; border-color: #ef8b44; color: #0b2432; border-radius: .3rem; }
+.situation-two > button:not(.secondary):hover, .s2-findings > button:hover { background: #fff1d5; border-color: #fff1d5; }
+.is-situation-two button.secondary { background: transparent; color: #fff1d5; border-color: #91ad9b; }
+.is-situation-two button.secondary:hover { background: #214c3e; }
+.s2-toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: .6rem; }
+.s2-timer { font-size: 1.4rem; font-weight: 850; font-variant-numeric: tabular-nums; color: #ffad6d; padding: .4rem .8rem; border: 1px solid #91ad9b; border-radius: .3rem; }
+.s2-investigation { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(260px, 1fr); gap: 1.2rem; align-items: start; }
+.s2-investigation .s2-feed { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.s2-findings { padding: 1rem; background: #173e35; border: 1px solid #91ad9b; border-left: 4px solid #e88a43; border-radius: .4rem; font-size: .9rem; }
+.s2-findings h2 { font-size: 1.1rem; }
+.s2-observation { background: #fff1d5; color: #0b2432; padding: .8rem; border-radius: .25rem; }
+.s2-observation h3 { margin-top: 0; }
+.s2-observation p { margin-bottom: 0; }
+.s2-discovered { color: #d7e6d2; font-size: .8rem; }
+.s2-known { font-size: .8rem; color: #bfd4c6; }
+.s2-decisions { display: grid; gap: .5rem; margin: 1rem 0; }
+.s2-decisions button { width: 100%; text-align: left; padding: .8rem 1rem; }
+.s2-trainer { font-size: .8rem; border-top: 1px dashed #91ad9b; padding-top: .7rem; }
+.s2-trainer h3 { font-size: .9rem; }
+.s2-previous { display: block; margin-top: 1.3rem; font-size: .8rem; }
+.s2-count { font-size: .8rem; }
+.s2-notification { max-width: 53rem; padding: 1.4rem; background: #173e35; border: 1px solid #91ad9b; border-left: 5px solid #ef8b44; border-radius: .5rem; }
+.s2-notification h2 { font-size: 1rem; color: #c8d9c5; }
+.s2-notification-text { font-size: clamp(1.15rem, 2.2vw, 1.7rem); line-height: 1.4; font-weight: 750; }
+.s2-forwarded { padding: .7rem; border: 1px dashed #ef8b44; font-size: .85rem; }
+.s2-arrive { animation: s2-appear 160ms ease-out both; }
+.is-situation-two section[aria-label='État de la partie'] { border-top: 1px solid #91ad9b66; margin-top: 1.5rem; padding-top: 1.2rem; }
+.is-situation-two .indicators .s1-gauge { display: grid; grid-template-columns: 2.8rem 1fr auto; align-items: center; gap: .8rem; padding: 1rem; background: #132f3c; border: 1px solid #91ad9b; border-radius: .6rem; }
+.is-situation-two .s1-gauge dt { font-size: .85rem; }
+.is-situation-two .s1-gauge dd { margin: 0; font-size: 1.8rem; font-weight: 900; }
+.is-situation-two section[aria-label='État de la partie'] > p { color: #c8d9c5; font-size: .75rem; }
+@keyframes s2-appear { from { opacity: .3; transform: translateY(7px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) { .s2-arrive { animation: none; } }
+@media (max-width: 800px) { .s2-feed { grid-template-columns: repeat(2, minmax(0, 1fr)); } .s2-investigation { grid-template-columns: 1fr; } }
+@media (max-width: 500px) { .s2-feed, .s2-investigation .s2-feed { grid-template-columns: 1fr; } .s2-gauge dt { font-size: .75rem; } }
+/* Le fil reste compact en projection ; le temps reste visible pendant le défilement. */
+.s2-toolbar { position: sticky; top: 0; z-index: 1; background: #0b2432; padding: .3rem 0; }
+@media (min-width: 1100px) {
+  .s2-investigation .s2-feed { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .is-situation-two > header .brand { display: none; }
+  .is-situation-two main { padding-top: .6rem; }
+  .situation-two h1 { margin-bottom: .4rem; }
+  .situation-two > p:not(.s2-kicker) { font-size: .85rem; margin: .5rem 0; }
+  .s2-post { padding: .7rem; font-size: .8rem; }
+  .s2-toolbar { margin-bottom: .3rem; }
+}

@@ -9,6 +9,16 @@ try {
   const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
+  async function finishSituation2() {
+    for (let index = 0; index < 5; index++) await page.getByRole('button', { name: 'Publication suivante', exact: true }).click();
+    await page.getByRole('button', { name: 'Démarrer l’enquête — 90 secondes' }).click();
+    for (const account of ['@rapbuzz_gironde', '@le_vrai_mika33', '@rapradar33']) {
+      for (let click = 0; click < 2; click++) await page.getByRole('button', { name: `Rechercher la provenance de ${account}`, exact: true }).click();
+    }
+    await page.getByRole('button', { name: 'Passer au débat collectif' }).click();
+    await page.getByRole('button', { name: 'C — Ne rien relayer sans preuve.', exact: true }).click();
+    await page.getByRole('button', { name: 'CONTINUER — ALLÔ COUTRAS ?', exact: true }).click();
+  }
   await page.goto('http://127.0.0.1:8000');
   for (const [width, height] of [[1280, 720], [1920, 1080], [1024, 576], [375, 812]]) {
     await page.setViewportSize({ width, height });
@@ -69,7 +79,8 @@ try {
   await page.getByText('Mémoire de la partie : 1 choix, 1 indice(s)', { exact: true }).waitFor();
   for (let index = 0; index < situations.length; index++) {
     await page.getByRole('heading', { level: 1, name: situations[index].title, exact: true }).waitFor();
-    if (index < situations.length - 1) await page.getByRole('button', { name: index === 0 ? 'Continuer — Tout le monde en parle !' : 'Situation suivante', exact: true }).click();
+    if (index === 1) await finishSituation2();
+    else if (index < situations.length - 1) await page.getByRole('button', { name: index === 0 ? 'Continuer — Tout le monde en parle !' : 'Situation suivante', exact: true }).click();
   }
   await page.getByRole('button', { name: 'Voir les emplacements des fins' }).click();
   for (const ending of endings) {
@@ -79,7 +90,7 @@ try {
   }
   await page.getByRole('button', { name: 'Recommencer une partie', exact: true }).click();
   await page.getByRole('button', { name: 'Annuler', exact: true }).click();
-  await page.getByText('Mémoire de la partie : 1 choix, 1 indice(s)', { exact: true }).waitFor();
+  await page.getByText('Mémoire de la partie : 2 choix, 4 indice(s)', { exact: true }).waitFor();
   await page.getByRole('button', { name: 'Recommencer une partie', exact: true }).click();
   await page.getByRole('button', { name: 'Confirmer le redémarrage', exact: true }).click();
   await page.getByRole('heading', { name: 'Ce Coutras qui n’existe pas… Ça dérape !' }).waitFor();
@@ -98,6 +109,7 @@ try {
   }
   await page.getByRole('button', { name: decisions[1].label, exact: true }).click();
   await page.getByRole('button', { name: 'Continuer — Tout le monde en parle !' }).click();
+  await finishSituation2();
   await page.getByRole('button', { name: 'Enregistrer le choix et l’indice de démonstration' }).click();
   await page.getByRole('button', { name: 'Situation suivante', exact: true }).click();
   await page.getByRole('button', { name: 'Situation précédente', exact: true }).click();
