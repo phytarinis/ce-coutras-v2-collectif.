@@ -11,11 +11,12 @@ try {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.addInitScript(() => {
     window.spoken = [];
+    window.voiceProfilesRead = [];
     window.voiceCanceled = 0;
     window.SpeechSynthesisUtterance = class { constructor(text) { this.text = text; } };
     Object.defineProperty(window, 'speechSynthesis', { configurable: true, value: {
       getVoices: () => [{ lang: 'fr-FR', localService: true }],
-      speak: line => window.spoken.push(line.text),
+      speak: line => { window.spoken.push(line.text); window.voiceProfilesRead.push({rate: line.rate, pitch: line.pitch}); },
       cancel: () => window.voiceCanceled++,
     } });
     window.rings = [];
@@ -76,6 +77,7 @@ try {
         assert.deepEqual(await page.evaluate(() => window.spoken), [`${contact.humor} ${contact.response}`]);
         await page.getByRole('button', { name: 'Écouter les dialogues', exact: true }).click();
         assert.equal(await page.evaluate(() => window.spoken.length), 2);
+        assert.deepEqual(await page.evaluate(() => window.voiceProfilesRead), Array(2).fill(contact.id === 'mairie' ? {rate: .93, pitch: .85} : {rate: 1.08, pitch: 1.25}));
         const canceled = await page.evaluate(() => window.voiceCanceled);
         await page.getByRole('button', { name: 'Son activé', exact: true }).click();
         assert.ok(await page.evaluate(() => window.voiceCanceled) > canceled);

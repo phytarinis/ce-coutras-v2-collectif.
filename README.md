@@ -368,3 +368,13 @@ aucune imitation de voix réelle, aucun service vocal ou fichier externe n’est
 ajouté au projet. Si le navigateur bloque la synthèse ou ne propose pas de voix
 française, un message l’indique et les textes restent accessibles. Sur Chromebook,
 le clic « Écouter les dialogues » permet une nouvelle tentative explicite.
+
+### Une voix par interlocuteur
+
+Chaque contact dispose d’un profil constant : mairie posée, festivités plus
+énergique, police plus grave et mesurée, tourisme plus clair et accueillant.
+Le navigateur répartit les voix françaises disponibles entre les quatre contacts,
+en privilégiant les voix locales. Le débit et la hauteur sont distincts même
+si seulement une ou deux voix sont installées. Le timbre réel et la prise en
+compte de ces réglages restent dépendants de ChromeOS et de son moteur vocal.
+Aucun dialogue, point ou appel n’est modifié ; la coupure du son reste disponible.
