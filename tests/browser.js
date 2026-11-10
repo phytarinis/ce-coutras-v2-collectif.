@@ -10,8 +10,9 @@ try {
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
   async function finishSituation2() {
-    for (let index = 0; index < 5; index++) await page.getByRole('button', { name: 'Publication suivante', exact: true }).click();
-    await page.getByRole('button', { name: 'Démarrer l’enquête — 90 secondes' }).click();
+    const skip = page.getByRole('button', { name: 'Passer l’animation', exact: true });
+    if (await skip.count()) await skip.click();
+    await page.getByRole('button', { name: 'LANCER L’ENQUÊTE — 90 S' }).click();
     for (const account of ['@rapbuzz_gironde', '@le_vrai_mika33', '@rapradar33']) {
       for (let click = 0; click < 2; click++) await page.getByRole('button', { name: `Rechercher la provenance de ${account}`, exact: true }).click();
     }

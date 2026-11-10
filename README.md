@@ -245,3 +245,40 @@ visible pendant le défilement de l’exploration. Le vidéoprojecteur physique 
 La mémoire et le temps restent dans la session courante : recharger la page ou
 recommencer une partie les efface, comme auparavant. Les situations 3 à 7 et les
 fins demeurent des emplacements de démonstration.
+
+## Mission 6 — Avalanche et bilan simplifié
+
+L’introduction de la situation 2 est désormais automatique : la première
+publication est visible à l’entrée, puis cinq autres arrivent toutes les 1,1 s
+(environ 5,5 s au total). « Passer l’animation » affiche immédiatement les six.
+Avec `prefers-reduced-motion`, elles sont toutes visibles dès l’entrée. Le
+chronomètre ne commence toujours qu’au clic sur « LANCER L’ENQUÊTE — 90 S ».
+
+Le défilement commence sans son. « Lancer le buzz » ou « Son coupé » active les
+notifications par une interaction explicite, nécessaire aux navigateurs. « Son
+activé » les coupe. Les sons sont de courtes sinusoïdes originales synthétisées
+par Web Audio, de fréquences légèrement différentes, sans fichier ni requête
+réseau. Un garde-fou évite leur chevauchement et la coupure arrête le son courant.
+Si Web Audio est absent ou bloqué, une indication apparaît et le jeu continue.
+Le choix sonore reste valable dans l’onglet ; l’activation ne relance pas une
+avalanche déjà engagée. En mode animations réduites, aucune rafale de sons n’est
+jouée. Le volume final reste à vérifier sur Chromebook et sur la sonorisation.
+
+La publication de @team_kozmo33 utilise une petite vignette du portrait original
+présent dans `assets`, avec « CONCERT GRATUIT À COUTRAS ? ». Aucun personnage
+n’est généré. Les cinq autres messages restent textuels.
+
+Le débat affiche trois cartes courtes : Source commune, Témoignage indirect,
+Scoop non confirmé. Une piste absente affiche seulement « Non découverte » sous
+son titre ; son explication reste cachée. Les trois décisions principales ont la
+même couleur bleu nuit/sauge, sans hiérarchie de bonne ou mauvaise réponse.
+L’orange reste réservé à la progression et aux accents de l’interface.
+
+Les règles, les trois pistes complètes, le temps, la pause/reprise, les points,
+les conséquences, la mémoire et la suite vers la situation 3 sont inchangés.
+Le module `src/buzz-audio.js` et les tests dédiés sont ajoutés. L’état n’ajoute
+qu’une action pour passer l’introduction ; le moteur et la situation 1 ne changent
+pas. `npm test` couvre 22 tests et `npm run test:browser` trois parcours, dont
+l’avalanche, les notifications, la désactivation, le repli sans audio, l’expiration
+avec une ou deux pistes et le bilan sans divulgation. Les tests audio emploient
+un contexte contrôlé ; un AudioContext réel a aussi été activé dans Chromium.
