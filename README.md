@@ -352,3 +352,19 @@ ou indisponible, les réponses immédiates et après deux secondes, la poursuite
 un appel, le bilan après deux, la navigation et les formats 16:9. Un AudioContext
 réel a été activé dans Chromium. Le niveau sonore et le vidéoprojecteur physique
 restent à vérifier sur le matériel de séance. La page reste défilable.
+
+### Voix des appels
+
+Les dialogues de la situation 3 sont lus avec la synthèse vocale française du
+navigateur, après la sonnerie (ou immédiatement si l’on passe à la réponse).
+Le message humoristique puis la réponse sont lus intégralement, sans modifier
+leurs textes. « Écouter les dialogues » relance la lecture par un clic explicite.
+« Son activé » coupe voix et sonnerie ; terminer ou quitter l’appel arrête la voix.
+La lecture n’impose aucun temps d’attente et ne change ni points ni appels.
+
+La disponibilité et le timbre dépendent des voix françaises installées ou
+proposées par ChromeOS. Une voix locale est préférée. Aucun enregistrement,
+aucune imitation de voix réelle, aucun service vocal ou fichier externe n’est
+ajouté au projet. Si le navigateur bloque la synthèse ou ne propose pas de voix
+française, un message l’indique et les textes restent accessibles. Sur Chromebook,
+le clic « Écouter les dialogues » permet une nouvelle tentative explicite.

@@ -10,6 +10,14 @@ try {
   await page.clock.install();
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.addInitScript(() => {
+    window.spoken = [];
+    window.voiceCanceled = 0;
+    window.SpeechSynthesisUtterance = class { constructor(text) { this.text = text; } };
+    Object.defineProperty(window, 'speechSynthesis', { configurable: true, value: {
+      getVoices: () => [{ lang: 'fr-FR', localService: true }],
+      speak: line => window.spoken.push(line.text),
+      cancel: () => window.voiceCanceled++,
+    } });
     window.rings = [];
     window.AudioContext = class {
       constructor() { if (window.blockAudio) throw new Error('Bloqué'); }
@@ -63,6 +71,16 @@ try {
         await page.clock.fastForward(2000);
       }
       await page.getByText(contact.response, { exact: true }).waitFor();
+      if (!index) assert.equal(await page.evaluate(() => window.spoken.length), 0);
+      else {
+        assert.deepEqual(await page.evaluate(() => window.spoken), [`${contact.humor} ${contact.response}`]);
+        await page.getByRole('button', { name: 'Écouter les dialogues', exact: true }).click();
+        assert.equal(await page.evaluate(() => window.spoken.length), 2);
+        const canceled = await page.evaluate(() => window.voiceCanceled);
+        await page.getByRole('button', { name: 'Son activé', exact: true }).click();
+        assert.ok(await page.evaluate(() => window.voiceCanceled) > canceled);
+      }
+
       await page.getByRole('button', { name: 'TERMINER L’APPEL', exact: true }).click();
       assert.equal(await page.getByRole('button', { name: `${contact.mark} — ${contact.name}`, exact: true }).isDisabled(), true);
       assert.deepEqual(await page.locator('dd').allTextContents(), ['5', '30']);
