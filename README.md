@@ -282,3 +282,11 @@ pas. `npm test` couvre 22 tests et `npm run test:browser` trois parcours, dont
 l’avalanche, les notifications, la désactivation, le repli sans audio, l’expiration
 avec une ou deux pistes et le bilan sans divulgation. Les tests audio emploient
 un contexte contrôlé ; un AudioContext réel a aussi été activé dans Chromium.
+
+### Ajustement après essai de la mission 6
+
+La vignette utilise désormais l’affiche complète `assets/affiche-kozmo-concert.png`,
+sans recadrage, à la place du portrait. Le gain de crête des notifications passe
+de 0,035 à 0,14 (environ +12 dB), sans allonger les sons ni modifier leur rythme.
+Le bouton de coupure et les protections contre le chevauchement sont conservés.
+Le volume perçu dépend encore du réglage et des haut-parleurs de l’appareil.

@@ -43,10 +43,10 @@ export function createSituation2({ state, onAction, onTick, onNext, onPrevious }
     if (index === 4) {
       const teaser = el('figure', undefined, 's2-kozmo');
       const image = el('img');
-      image.src = 'assets/originals/Portrait studio d’un homme en veste verte-2.png';
-      image.alt = 'KØZMO en survêtement vert et crème, avec ses lunettes de soleil';
-      image.width = 1312;
-      image.height = 1199;
+      image.src = 'assets/affiche-kozmo-concert.png';
+      image.alt = 'Affiche annonçant le concert gratuit de KØZMO à Coutras';
+      image.width = 1086;
+      image.height = 1448;
       teaser.append(image, el('figcaption', 'CONCERT GRATUIT À COUTRAS ?'));
       card.append(teaser);
     }
