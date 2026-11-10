@@ -16,11 +16,8 @@ try {
     await page.getByRole('button', { name: 'Continuer — Tout le monde en parle !' }).click();
   }
   async function showPosts() {
-    for (let index = 0; index < 6; index++) {
-      assert.equal(await page.locator('.s2-post').count(), index + 1);
-      await page.getByText(publications[index].text, { exact: true }).waitFor();
-      if (index < 5) await page.getByRole('button', { name: 'Publication suivante', exact: true }).click();
-    }
+    assert.equal(await page.locator('.s2-post').count(), 6);
+    for (const post of publications) await page.getByText(post.text, { exact: true }).waitFor();
   }
   async function inspect(account, keyboard = false) {
     const card = page.getByRole('button', { name: `Rechercher la provenance de ${account}`, exact: true });
@@ -34,7 +31,7 @@ try {
     await page.clock.fastForward(120000);
     assert.equal(await page.getByRole('timer').count(), 0);
     await showPosts();
-    await page.getByRole('button', { name: 'Démarrer l’enquête — 90 secondes' }).click();
+    await page.getByRole('button', { name: 'LANCER L’ENQUÊTE — 90 S' }).click();
     assert.equal(await page.getByRole('timer').textContent(), '1:30');
     await page.getByText('RapRadar33 : ce nom est déjà dans votre carnet.', { exact: true }).waitFor();
     await page.getByRole('button', { name: 'Rechercher la provenance de @le_vrai_mika33', exact: true }).click();
@@ -73,7 +70,7 @@ try {
   // Expiration réelle du contrôleur d'interface, sans attendre 90 secondes.
   await arrive();
   await showPosts();
-  await page.getByRole('button', { name: 'Démarrer l’enquête — 90 secondes' }).click();
+  await page.getByRole('button', { name: 'LANCER L’ENQUÊTE — 90 S' }).click();
   await inspect('@rapradar33');
   for (const [width, height] of [[1280, 720], [1920, 1080], [1024, 576], [375, 812]]) {
     await page.setViewportSize({ width, height });

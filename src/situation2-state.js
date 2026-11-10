@@ -42,6 +42,7 @@ export function transitionSituation2(state, action, now = Date.now()) {
   }
   if (action.type === 'visit' || action.type === 'tick') return next;
   if (action.type === 'nextPost' && scene.phase === 'intro') scene.visiblePosts = Math.min(6, scene.visiblePosts + 1);
+  else if (action.type === 'skipIntro' && scene.phase === 'intro') scene.visiblePosts = 6;
   else if (action.type === 'start' && scene.phase === 'intro' && scene.visiblePosts === 6) {
     scene.phase = 'explore';
     scene.deadline = now + scene.remainingMs;

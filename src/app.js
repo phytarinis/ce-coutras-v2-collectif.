@@ -66,12 +66,16 @@ function render() {
     }));
   } else if (game.sceneId === 'tout-le-monde') {
     game = transitionSituation2(game, { type: 'visit' });
+    if (game.situation2.phase === 'intro' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      game = transitionSituation2(game, { type: 'skipIntro' });
+    }
     const scene = createSituation2({
       state: game,
       onAction: (action, focusKey) => {
+        const previousFocus = document.activeElement?.dataset.s2Focus;
         game = transitionSituation2(game, action);
         render();
-        root.querySelector(`[data-s2-focus="${focusKey}"]`)?.focus();
+        root.querySelector(`[data-s2-focus="${focusKey ?? previousFocus}"]`)?.focus();
       },
       onTick: () => {
         const phase = game.situation2.phase;
