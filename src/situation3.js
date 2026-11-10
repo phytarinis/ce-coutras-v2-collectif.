@@ -85,7 +85,7 @@ export function createSituation3({ state, onAction, onNext, onPrevious }) {
         voiceNote.textContent = '';
         telephoneVoice.say(`${contact.humor} ${contact.response}`, () => {
           if (!disposed) voiceNote.textContent = 'Voix française indisponible ou bloquée. Essayez « Écouter les dialogues » ; les textes restent accessibles.';
-        });
+        }, contact.id);
       }
       const replay = el('button', 'Écouter les dialogues', 'secondary');
       replay.type = 'button';
